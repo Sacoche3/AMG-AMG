@@ -6,9 +6,10 @@
     <title>Système de Recharge Wave</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Variables CSS */
         :root {
-            --wave-primary: #6366F1;
-            --wave-secondary: #4F46E5;
+            --wave-primary: #00b1b1;
+            --wave-secondary: #009595;
             --wave-accent: #818CF8;
             --wave-success: #10B981;
             --wave-warning: #F59E0B;
@@ -19,6 +20,7 @@
             --border-color: #E5E7EB;
         }
 
+        /* Reset et styles de base */
         * {
             margin: 0;
             padding: 0;
@@ -35,25 +37,26 @@
             align-items: center;
         }
 
+        /* Conteneur principal */
         .container {
             width: 100%;
             max-width: 500px;
             background: var(--card-bg);
             border-radius: 24px;
             padding: 32px;
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 177, 177, 0.1);
             position: relative;
             overflow: hidden;
         }
 
-        /* Header Styles */
+        /* En-tête et logo */
         .wave-decoration {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 8px;
-            background: linear-gradient(90deg, var(--wave-primary), var(--wave-secondary), var(--wave-accent));
+            background: linear-gradient(90deg, var(--wave-primary), var(--wave-secondary));
         }
 
         .header {
@@ -89,7 +92,7 @@
             font-size: 16px;
         }
 
-        /* Payment Method Styles */
+        /* Section de paiement */
         .payment-method {
             display: flex;
             align-items: center;
@@ -110,25 +113,6 @@
             gap: 6px;
         }
 
-        /* Alert Box Styles */
-        .alert-box {
-            background: rgba(99, 102, 241, 0.1);
-            border-left: 4px solid var(--wave-primary);
-            padding: 16px;
-            margin: 24px 0;
-            border-radius: 12px;
-            font-size: 14px;
-            line-height: 1.6;
-            color: var(--wave-primary);
-        }
-
-        .alert-box.warning {
-            background: rgba(245, 158, 11, 0.1);
-            border-left-color: var(--wave-warning);
-            color: var(--wave-warning);
-        }
-
-        /* Payment Section Styles */
         .payment-section {
             background: var(--background);
             padding: 24px;
@@ -137,6 +121,7 @@
             border: 1px solid var(--border-color);
         }
 
+        /* Numéro de paiement */
         .payment-number {
             background: white;
             padding: 20px;
@@ -144,7 +129,6 @@
             border-radius: 16px;
             text-align: center;
             margin: 20px 0;
-            position: relative;
         }
 
         .clickable-number {
@@ -161,11 +145,11 @@
         }
 
         .clickable-number:hover {
-            background-color: rgba(99, 102, 241, 0.1);
+            background-color: rgba(0, 177, 177, 0.1);
             transform: scale(1.02);
         }
 
-        /* Transaction Details Styles */
+        /* Détails de la transaction */
         .transaction-details {
             margin: 24px 0;
         }
@@ -181,17 +165,41 @@
             border-bottom: none;
         }
 
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 24px;
+        /* Alertes et notifications */
+        .alert-box {
+            background: rgba(0, 177, 177, 0.1);
+            border-left: 4px solid var(--wave-primary);
+            padding: 16px;
+            margin: 24px 0;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-primary);
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
+        .alert-box.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: var(--wave-warning);
+            color: var(--wave-warning);
+        }
+
+        .notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            background: var(--wave-primary);
+            color: white;
+            display: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 177, 177, 0.3);
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Formulaire et boutons */
+        .form-group {
+            margin-bottom: 24px;
         }
 
         input {
@@ -200,19 +208,16 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             font-size: 14px;
-            background: white;
-            color: var(--text-primary);
             transition: all 0.3s ease;
         }
 
         input:focus {
             outline: none;
             border-color: var(--wave-primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(0, 177, 177, 0.2);
         }
 
-        /* Button Styles */
-        .wave-btn {
+        .wave-pay-btn, .confirm-btn {
             background: var(--wave-primary);
             color: white;
             border: none;
@@ -228,52 +233,29 @@
             justify-content: center;
             gap: 8px;
             text-decoration: none;
+            margin: 24px 0;
         }
 
-        .wave-btn:hover {
+        .wave-pay-btn:hover {
             background: var(--wave-secondary);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 177, 177, 0.3);
         }
 
-        /* Loading and Notification Styles */
-        .loading {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(249, 250, 251, 0.8);
-            backdrop-filter: blur(5px);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+        .confirm-btn {
+            background: var(--wave-success);
         }
 
-        .notification {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            padding: 16px 24px;
-            border-radius: 12px;
-            background: var(--wave-primary);
-            color: white;
-            display: none;
-            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
-            animation: slideIn 0.3s ease;
-            z-index: 1000;
-            font-weight: 500;
+        .confirm-btn:hover {
+            background: #0ea571;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
         }
 
         /* Animations */
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -285,10 +267,10 @@
             <div class="wave-logo">
                 <i class="fas fa-wave-square"></i>
             </div>
-            <h1>Confirmation de recharge</h1>
+            <h1>Paiement Wave</h1>
             <p>Suivez les étapes pour compléter votre paiement</p>
         </div>
-        
+
         <div class="payment-method">
             <div class="wave-badge">
                 <i class="fas fa-wave-square"></i> Wave Payment
@@ -297,15 +279,15 @@
 
         <div class="alert-box">
             <strong><i class="fas fa-info-circle"></i> Instructions:</strong><br>
-            1. Cliquez sur le bouton "Payer avec Wave" ci-dessous<br>
-            2. Suivez les instructions dans l'application Wave<br>
-            3. Après paiement, renseignez votre numéro et l'ID de transaction<br>
-            4. Votre compte sera crédité automatiquement
+            1. Vérifiez les détails de votre transaction<br>
+            2. Cliquez sur le bouton "Payer avec Wave"<br>
+            3. Complétez le paiement dans l'application Wave<br>
+            4. Renseignez votre numéro et l'ID de transaction
         </div>
 
         <div class="payment-section">
             <div class="payment-number">
-                <div class="payment-label">Numéro de paiement </div>
+                <div class="payment-label">Numéro de paiement</div>
                 <div class="clickable-number" id="paymentNumber" onclick="copyToClipboard()">
                     0789456123
                 </div>
@@ -313,55 +295,55 @@
 
             <div class="transaction-details">
                 <div class="detail-row">
-                    <span class="label"><i class="fas fa-building-columns"></i> Opérateur</span>
-                    <span class="value highlighted" id="operator"></span>
+                    <span class="label"><i class="fas fa-building-columns"></i> Service</span>
+                    <span class="value highlighted" id="operator">Recharge</span>
                 </div>
                 <div class="detail-row">
                     <span class="label"><i class="fas fa-coins"></i> Montant</span>
                     <span class="value highlighted" id="amount">10 000 FCFA</span>
                 </div>
                 <div class="detail-row">
-                    <span class="label"><i class="fas fa-phone"></i> Numéro à recharger</span>
+                    <span class="label"><i class="fas fa-phone"></i> Numéro</span>
                     <span class="value" id="phone">0712345678</span>
                 </div>
             </div>
+
+            <a href="https://pay.wave.com/m/M_ci_IHyUQc5CX490/c/ci/" class="wave-pay-btn">
+                <i class="fas fa-wave-square"></i>
+                Payer avec Wave
+            </a>
         </div>
 
         <form id="confirmationForm">
             <div class="form-group">
-                <label><i class="fas fa-mobile-alt"></i> Numéro utilisé pour le paiement</label>
-                <input type="tel" id="userPaymentNumber" required 
-                       placeholder="Ex: 07XXXXXXXX">
+                <label><i class="fas fa-mobile-alt"></i> Numéro Wave utilisé</label>
+                <input type="tel" id="userPaymentNumber" required placeholder="Ex: 07XXXXXXXX">
             </div>
 
             <div class="form-group">
-                <label><i class="fas fa-hashtag"></i> ID de transaction</label>
-                <input type="text" id="transactionId" required 
-                       placeholder="Ex: WP12345678">
+                <label><i class="fas fa-hashtag"></i> ID de transaction Wave</label>
+                <input type="text" id="transactionId" required placeholder="Ex: WP12345678">
             </div>
 
-            <button type="submit" class="wave-btn">
+            <button type="submit" class="confirm-btn">
                 <i class="fas fa-check-circle"></i> Confirmer le paiement
             </button>
         </form>
 
         <div class="alert-box warning">
-            <i class="fas fa-exclamation-triangle"></i> Important : Les informations incorrectes entraîneront l'annulation automatique du transfert.
+            <i class="fas fa-exclamation-triangle"></i> Important : Vérifiez attentivement vos informations avant de confirmer.
         </div>
-    </div>
-
-    <div class="loading">
-        <div class="loader"></div>
     </div>
 
     <div class="notification" id="notification"></div>
 
     <script type="module">
+        // Import Firebase modules
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
         import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
         import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js';
 
-        // Configuration Firebase
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCRrd86FZDKvROvrliQwDoWzjSF_An6T1g",
             authDomain: "voiture-13e08.firebaseapp.com",
@@ -377,15 +359,7 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // Utility Functions
-        function showLoading() {
-            document.querySelector('.loading').style.display = 'flex';
-        }
-
-        function hideLoading() {
-            document.querySelector('.loading').style.display = 'none';
-        }
-
+        // Utility functions
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -397,19 +371,15 @@
             }, 3000);
         }
 
-        // Copy to Clipboard Function
+        // Copy to clipboard functionality
         window.copyToClipboard = function() {
             const number = document.getElementById('paymentNumber').textContent.trim();
             navigator.clipboard.writeText(number)
-                .then(() => {
-                    showNotification('Numéro copié avec succès !');
-                })
-                .catch(err => {
-                    showNotification('Erreur lors de la copie', 'error');
-                });
+                .then(() => showNotification('Numéro copié avec succès !'))
+                .catch(() => showNotification('Erreur lors de la copie', 'error'));
         }
 
-        // Load Data from SessionStorage
+        // Load initial data
         window.addEventListener('load', function() {
             const rechargeData = JSON.parse(sessionStorage.getItem('rechargeData'));
             if (rechargeData) {
@@ -425,16 +395,17 @@
             }
         });
 
-        // Check Authentication
+        // Authentication check
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 showNotification('Veuillez vous connecter pour continuer', 'error');
-                setTimeout(() => {window.location.href = 'login.html';
+                setTimeout(() => {
+                    window.location.href = 'login.html';
                 }, 2000);
             }
         });
 
-        // Form Submission Handler
+        // Form submission handler
         document.getElementById('confirmationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -443,36 +414,34 @@
                 showNotification('Veuillez vous connecter pour continuer', 'error');
                 return;
             }
-
-            showLoading();
             
             try {
                 const userPaymentNumber = document.getElementById('userPaymentNumber').value;
                 const transactionId = document.getElementById('transactionId').value;
                 const rechargeData = JSON.parse(sessionStorage.getItem('rechargeData'));
                 
-                // Create transaction object
+                // Créer l'objet de transaction
                 const transactionData = {
                     ...rechargeData,
-                    userPaymentNumber: userPaymentNumber,
-                    transactionId: transactionId,
+                    userPaymentNumber,
+                    transactionId,
                     status: 'pending',
                     date: new Date().toISOString(),
                     userId: user.uid,
                     credited: false
                 };
 
-                // Save to Firebase
+                // Sauvegarder dans Firebase
                 const transactionsRef = ref(db, 'transactions');
                 const newTransactionRef = push(transactionsRef);
                 await set(newTransactionRef, transactionData);
 
                 showNotification('Paiement confirmé ! Redirection...', 'success');
                 
-                // Clear sessionStorage
+                // Vider le sessionStorage
                 sessionStorage.removeItem('rechargeData');
 
-                // Redirect
+                // Rediriger
                 setTimeout(() => {
                     window.location.href = 'historique.html';
                 }, 2000);
@@ -480,8 +449,6 @@
             } catch (error) {
                 console.error('Erreur:', error);
                 showNotification('Erreur lors de la confirmation: ' + error.message, 'error');
-            } finally {
-                hideLoading();
             }
         });
     </script>
