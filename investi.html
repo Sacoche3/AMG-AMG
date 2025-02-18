@@ -307,27 +307,27 @@
                     <h2 class="taxi-title">FTG 1 code 6789</h2>
                     <div class="taxi-price">
                         <i class="fas fa-tag"></i>
-                        2 500 FCFA
+                        5 000 FCFA
                     </div>
                     <div class="taxi-details">
                         <div class="taxi-detail-item">
                             <span class="detail-label">Revenus quotidien</span>
-                            <span class="detail-value"> 200 FCFA</span>
+                            <span class="detail-value"> 400 FCFA</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Cycle</span>
-                            <span class="detail-value"> 124 jours</span>
+                            <span class="detail-value"> 150 jours</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Revenus total</span>
-                            <span class="detail-value"> 24 800 FCFA</span>
+                            <span class="detail-value"> 60 000 FCFA</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Limite d'achat</span>
                             <span class="detail-value" id="purchaseLimit1">1 achats restants</span>
                         </div>
                     </div>
-                    <button class="buy-button" onclick="investProduct(1, 2500)">
+                    <button class="buy-button" onclick="investProduct(1, 5000)">
                         <i class="fas fa-shopping-cart"></i>
                         Acheter
                     </button>
@@ -344,27 +344,27 @@
                     <h2 class="taxi-title">SDR code 213456</h2>
                     <div class="taxi-price">
                         <i class="fas fa-tag"></i>
-                        9 000 FCFA
+                        10 000 FCFA
                     </div>
                     <div class="taxi-details">
                         <div class="taxi-detail-item">
                             <span class="detail-label">Revenus quotidien</span>
-                            <span class="detail-value"> 700 FCFA</span>
+                            <span class="detail-value"> 800 FCFA</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Cycle</span>
-                            <span class="detail-value"> 124 jours</span>
+                            <span class="detail-value"> 150 jours</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Revenus total</span>
-                            <span class="detail-value"> 86 800 FCFA</span>
+                            <span class="detail-value"> 120 000 FCFA</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Limite d'achat</span>
                             <span class="detail-value" id="purchaseLimit2">2 achats restants</span>
                         </div>
                     </div>
-                    <button class="buy-button" onclick="investProduct(2, 9000)">
+                    <button class="buy-button" onclick="investProduct(2, 10000)">
                         <i class="fas fa-shopping-cart"></i>
                         Acheter
                     </button>
@@ -390,11 +390,11 @@
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Cycle</span>
-                            <span class="detail-value"> 124 jours</span>
+                            <span class="detail-value"> 150 jours</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Revenus total</span>
-                            <span class="detail-value"> 124 000 FCFA</span>
+                            <span class="detail-value"> 150 000 FCFA</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Limite d'achat</span>
@@ -427,11 +427,11 @@
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Cycle</span>
-                            <span class="detail-value"> 124 jours</span>
+                            <span class="detail-value"> 150 jours</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Revenus total</span>
-                            <span class="detail-value"> 372 000 FCFA</span>
+                            <span class="detail-value"> 450 000 FCFA</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Limite d'achat</span>
@@ -464,11 +464,11 @@
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Cycle</span>
-                            <span class="detail-value"> 124 jours</span>
+                            <span class="detail-value"> 150 jours</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Revenus total</span>
-                            <span class="detail-value"> 744 000 FCFA</span>
+                            <span class="detail-value"> 900 000 FCFA</span>
                         </div>
                         <div class="taxi-detail-item">
                             <span class="detail-label">Limite d'achat</span>
@@ -560,37 +560,37 @@ let userBalance = 0;
 // Configuration des produits
 const PRODUCT_CONFIG = {
     1: {
-        dailyRevenue: 200,
-        cycleDuration: 124,
-        totalRevenue: 24800,
-        price: 2500,
+        dailyRevenue: 400,
+        cycleDuration: 150,
+        totalRevenue: 60000,
+        price: 5000,
         limit: 1
     },
     2: {
-        dailyRevenue: 700,
-        cycleDuration: 124,
-        totalRevenue: 86800,
-        price: 9000,
+        dailyRevenue: 800,
+        cycleDuration: 150,
+        totalRevenue: 120000,
+        price: 10000,
         limit: 2
     },
     3: {
         dailyRevenue: 1000,
-        cycleDuration: 124,
-        totalRevenue: 124000,
+        cycleDuration: 150,
+        totalRevenue: 150000,
         price: 25000,
         limit: 2
     },
     4: {
         dailyRevenue: 3000,
-        cycleDuration: 124,
-        totalRevenue: 372000,
+        cycleDuration: 150,
+        totalRevenue: 450000,
         price: 50000,
         limit: 2
     }, 
     5: {
         dailyRevenue: 6000,
-        cycleDuration: 124,
-        totalRevenue: 744000,
+        cycleDuration: 150,
+        totalRevenue: 900000,
         price: 100000,
         limit: 2
     }
