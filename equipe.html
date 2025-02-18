@@ -4,266 +4,345 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Équipe</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            background: #000000;
-            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
-            min-height: 100vh;
+            background-color: #f0f2f5;
+            padding: 20px;
         }
-        
-        .neon-card {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        
-        .neon-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.05),
-                transparent
-            );
-            transition: 0.5s;
+
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
-        
-        .neon-card:hover::before {
-            left: 100%;
+
+        .stat-card {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
         }
-        
-        .neon-border {
-            position: relative;
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
-        
-        .neon-border::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #ff0000, #ff7300, #00ff00, #00ff88);
-            z-index: -1;
-            animation: borderAnimation 10s linear infinite;
-            border-radius: inherit;
+
+        .stat-title {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
         }
-        
-        @keyframes borderAnimation {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        
+
         .stat-value {
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, #fff 0%, #888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            color: #1a1a1a;
+            font-size: 2rem;
+            font-weight: bold;
         }
-        
-        .floating-card {
-            animation: float 6s ease-in-out infinite;
+
+        .workers-btn {
+            width: 100%;
+            padding: 15px;
+            background: #4F46E5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            transition: background 0.3s;
         }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
+
+        .workers-btn:hover {
+            background: #4338CA;
         }
-        
-        .cyber-input {
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            position: relative;
-            transition: all 0.3s ease;
+
+        .workers-list {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
         }
-        
-        .cyber-input:focus {
-            border-color: #00ff88;
-            box-shadow: 0 0 15px rgba(0,255,136,0.3);
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
-        
-        .cyber-button {
-            background: linear-gradient(45deg, #ff0000, #ff7300);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a1a1a;
         }
-        
-        .cyber-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+
+        .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .worker-item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .worker-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .worker-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .worker-avatar {
+            width: 50px;
+            height: 50px;
+            background: #e5edff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #4F46E5;
+            font-weight: 600;
+        }
+
+        .worker-details {
+            flex: 1;
+        }
+
+        .worker-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .worker-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .worker-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .worker-stat {
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-amount {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .referral-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .referral-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .referral-info {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .referral-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .referral-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            padding: 10px 20px;
+            background: #4F46E5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #4338CA;
+        }
+
+        .bonus-info {
+            background: #e0f2fe;
+            color: #0c4a6e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .no-team-message {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 1.1rem;
         }
     </style>
 </head>
-<body class="p-6">
-    <div class="max-w-7xl mx-auto">
-        <!-- Stats Section -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div class="neon-card floating-card rounded-2xl p-8 text-white">
-                <div class="flex justify-between items-start">
-                    <h3 class="text-xl text-gray-400">Total d'équipe</h3>
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-pink-500 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                    </div>
-                </div>
-                <p class="stat-value mt-4" id="teamCount">0</p>
+<body>
+    <div class="container">
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-title">Total d'équipe</div>
+                <div class="stat-value" id="teamCount">0</div>
             </div>
-
-            <div class="neon-card floating-card rounded-2xl p-8 text-white" style="animation-delay: 0.2s">
-                <div class="flex justify-between items-start">
-                    <h3 class="text-xl text-gray-400">Bonus d'équipe</h3>
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-                </div>
-                <p class="stat-value mt-4" id="totalBonus">0 FCFA</p>
+            <div class="stat-card">
+                <div class="stat-title">Bonus de l'équipe</div>
+                <div class="stat-value" id="totalBonus">0 FCFA</div>
             </div>
-
-            <div class="neon-card floating-card rounded-2xl p-8 text-white" style="animation-delay: 0.4s">
-                <div class="flex justify-between items-start">
-                    <h3 class="text-xl text-gray-400">Niveau d'équipe</h3>
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                    </div>
-                </div>
-                <p class="stat-value mt-4" id="teamLevel">1</p>
+            <div class="stat-card">
+                <div class="stat-title">Niveau d'équipe</div>
+                <div class="stat-value" id="teamLevel">1</div>
             </div>
         </div>
 
-        <!-- Team Button -->
-        <button id="showTeamButton" class="cyber-button w-full md:w-auto text-white px-8 py-4 rounded-xl text-lg font-bold mb-12 flex items-center justify-center gap-3">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+        <button class="workers-btn" id="showTeamButton">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
-            Voir mes équipes
+            Voir mes équipes 
         </button>
 
-        <!-- Referral Section -->
-        <div class="neon-card neon-border rounded-2xl p-8 text-white mb-8">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold bg-gradient-to-r from-red-500 to-yellow-500 bg-clip-text text-transparent">
-                    Système de Parrainage
-                </h2>
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-500 to-red-500 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-                    </svg>
+        <div id="teamModal" class="modal hidden">
+            <div class="workers-list">
+                <div class="modal-header">
+                    <h2 class="modal-title">Membres de l'équipe</h2>
+                    <button id="closeTeamModalBtn" class="close-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
                 </div>
-            </div>
-
-            <div class="space-y-6">
-                <div class="neon-card rounded-xl p-6 mb-8">
-                    <p class="text-gray-300 text-lg">Parrainez vos travailleurs et gagnez 10% sur leurs achats de maison !</p>
-                </div>
-
-                <div>
-                    <label class="block text-gray-400 mb-2">Votre lien de parrainage</label>
-                    <div class="flex gap-4">
-                        <input type="text" id="referralLink" readonly class="cyber-input w-full rounded-lg px-4 py-3">
-                        <button id="copyReferralLinkBtn" class="cyber-button px-6 py-3 rounded-lg">Copier</button>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-gray-400 mb-2">Votre code de parrainage</label>
-                    <div class="flex gap-4">
-                        <input type="text" id="referralCode" readonly class="cyber-input w-full rounded-lg px-4 py-3">
-                        <button id="copyReferralCodeBtn" class="cyber-button px-6 py-3 rounded-lg">Copier</button>
-                    </div>
-                </div>
-
-                <div class="neon-card rounded-xl p-6 mt-8">
-                    <p class="text-gray-300 flex items-center gap-3">
-                        <span class="text-2xl">💎</span>
-                        Bonus spécial : Recevez 10% sur tous les achats de maison de vos filleuls !
-                    </p>
+                <div id="teamMembersContainer">
+                    <!-- Les membres de l'équipe seront injectés ici -->
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Team Modal -->
-    <div id="teamModal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden">
-        <div class="neon-card neon-border rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden">
-            <div class="p-6 border-b border-gray-800 flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-white">Membres de l'équipe</h2>
-                <button id="closeTeamModalBtn" class="text-gray-500 hover:text-white transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
+        <div class="referral-section">
+            <div class="referral-title">Système de Parrainage</div>
+            <div class="referral-info">
+                Parrainez vos travailleurs et gagnez 10% sur leurs achats de maison !
             </div>
-            <div id="teamMembersContainer" class="p-6 overflow-y-auto"></div>
-        </div>
-    </div>
-
-    <script>
-        // Modal functionality
-        const showTeamButton = document.getElementById('showTeamButton');
-        const teamModal = document.getElementById('teamModal');
-        const closeTeamModalBtn = document.getElementById('closeTeamModalBtn');
-
-        showTeamButton.addEventListener('click', () => {
-            teamModal.classList.remove('hidden');
-        });
-
-        closeTeamModalBtn.addEventListener('click', () => {
-            teamModal.classList.add('hidden');
-        });
-
-        teamModal.addEventListener('click', (e) => {
-            if (e.target === teamModal) {
-                teamModal.classList.add('hidden');
-            }
-        });
-
-        // Copy functionality
-        function setupCopyButton(buttonId, inputId) {
-            const button = document.getElementById(buttonId);
-            const input = document.getElementById(inputId);
             
-            button.addEventListener('click', () => {
-                input.select();
-                document.execCommand('copy');
-                button.textContent = 'Copié !';
-                setTimeout(() => {
-                    button.textContent = 'Copier';
-                }, 2000);
-            });
-        }
+            <div>
+                <div class="stat-title">Votre lien de parrainage</div>
+                <div class="referral-input">
+                    <input type="text" id="referralLink" readonly>
+                    <button class="copy-btn" id="copyReferralLinkBtn">Copier</button>
+                </div>
+            </div>
 
-        setupCopyButton('copyReferralLinkBtn', 'referralLink');
-        setupCopyButton('copyReferralCodeBtn', 'referralCode');
-    </script>
-   
-   <script type="module">
+            <div>
+                <div class="stat-title">Votre code de parrainage</div>
+                <div class="referral-input">
+                    <input type="text" id="referralCode" readonly>
+                    <button class="copy-btn" id="copyReferralCodeBtn">Copier</button>
+                </div>
+            </div>
+
+            <div class="bonus-info">
+                💎 Bonus spécial : Recevez 10% sur tous les achats de maison de vos filleuls !
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module">
    // Firebase Configuration and Initialization
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
@@ -279,296 +358,232 @@ const firebaseConfig = {
     appId: "1:614579163299:web:96849a3268525c29aeaf16"
 };
 
-// Application State
-class AppState {
-    constructor() {
-        this.app = initializeApp(firebaseConfig);
-        this.auth = getAuth(this.app);
-        this.database = getDatabase(this.app);
-        this.currentUser = null;
-        this.teamMembers = [];
-        this.totalTeamBonus = 0;
-    }
-}
+        
+         // Initialisation Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
 
-// UI Elements Manager
-class UIManager {
-    constructor() {
-        this.elements = {
+
+        // State Management
+        let currentUser = null;
+        let teamMembers = [];
+        let totalTeamBonus = 0;
+
+        // UI Elements
+        const elements = {
             showTeamButton: document.getElementById('showTeamButton'),
             closeTeamModalBtn: document.getElementById('closeTeamModalBtn'),
             copyReferralCodeBtn: document.getElementById('copyReferralCodeBtn'),
             copyReferralLinkBtn: document.getElementById('copyReferralLinkBtn'),
             teamModal: document.getElementById('teamModal'),
-            teamMembersContainer: document.getElementById('teamMembersContainer'),
-            referralCode: document.getElementById('referralCode'),
-            referralLink: document.getElementById('referralLink'),
-            teamCount: document.getElementById('teamCount'),
-            teamLevel: document.getElementById('teamLevel'),
-            totalBonus: document.getElementById('totalBonus')
+            teamMembersContainer: document.getElementById('teamMembersContainer')
         };
-    }
 
-    setupEventListeners() {
-        this.elements.showTeamButton?.addEventListener('click', () => 
-            this.elements.teamModal.classList.remove('hidden'));
+        // Utility Functions
+        const utils = {
+            formatCurrency: (amount) => {
+                return amount.toLocaleString('fr-FR', { 
+                    minimumFractionDigits: 0, 
+                    maximumFractionDigits: 0 
+                }) + ' FCFA';
+            },
 
-        this.elements.closeTeamModalBtn?.addEventListener('click', () => 
-            this.elements.teamModal.classList.add('hidden'));
-
-        this.elements.copyReferralCodeBtn?.addEventListener('click', () => 
-            Utils.copyToClipboard(this.elements.referralCode));
-
-        this.elements.copyReferralLinkBtn?.addEventListener('click', () => 
-            Utils.copyToClipboard(this.elements.referralLink));
-
-        this.elements.teamModal?.addEventListener('click', (e) => {
-            if (e.target === this.elements.teamModal) {
-                this.elements.teamModal.classList.add('hidden');
-            }
-        });
-    }
-
-    updateTeamStats(members, totalBonus) {
-        this.elements.teamCount.textContent = members.length;
-        this.elements.teamLevel.textContent = Math.floor(members.length / 5) + 1;
-        this.elements.totalBonus.textContent = Utils.formatCurrency(totalBonus);
-    }
-
-    updateTeamMembers(members) {
-        if (members.length === 0) {
-            this.elements.teamMembersContainer.innerHTML = `
-                <div class="no-team-message">Aucun membre dans votre équipe</div>`;
-            return;
-        }
-
-        this.elements.teamMembersContainer.innerHTML = members.map(member => `
-            <div class="worker-item">
-                <div class="worker-info">
-                    <div class="worker-avatar">${member.username.charAt(0).toUpperCase()}</div>
-                    <div class="worker-details">
-                        <div class="worker-name">${member.username}</div>
-                        <div class="worker-date">Rejoint le ${Utils.formatDate(member.createdAt)}</div>
-                    </div>
-                </div>
-                <div class="worker-stats">
-                    <div class="worker-stat">
-                        <div class="stat-label">Total investi</div>
-                        <div class="stat-amount">${Utils.formatCurrency(member.totalInvestments || 0)}</div>
-                    </div>
-                    <div class="worker-stat">
-                        <div class="stat-label">Bonus généré</div>
-                        <div class="stat-amount">${Utils.formatCurrency(member.totalBonusGenerated || 0)}</div>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-}
-
-// Utility Functions
-class Utils {
-    static formatCurrency(amount) {
-        return amount.toLocaleString('fr-FR', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }) + ' FCFA';
-    }
-
-    static formatDate(dateString) {
-        return new Date(dateString).toLocaleDateString('fr-FR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    }
-
-    static async copyToClipboard(element) {
-        try {
-            await navigator.clipboard.writeText(element.value);
-            alert('Copié !');
-        } catch (err) {
-            console.error('Erreur de copie:', err);
-        }
-    }
-}
-
-// Team Management System
-class TeamManager {
-    constructor(appState, uiManager) {
-        this.appState = appState;
-        this.uiManager = uiManager;
-    }
-
-    async processReferralBonus(investmentAmount, memberUid, referrerUid) {
-        try {
-            const referrerRef = ref(this.appState.database, 'users/' + referrerUid);
-            const memberRef = ref(this.appState.database, 'users/' + memberUid);
-            const bonusAmount = investmentAmount * 0.10;
-
-            if (bonusAmount > 0) {
-                await this.updateReferrerBalance(referrerRef, bonusAmount);
-                await this.updateMemberStats(memberRef, bonusAmount, investmentAmount);
-                await this.logBonus(referrerUid, memberUid, bonusAmount, investmentAmount);
-                await this.createNotification(referrerUid, bonusAmount, memberUid);
-            }
-        } catch (error) {
-            console.error('Erreur lors du traitement du bonus:', error);
-        }
-    }
-
-    async updateReferrerBalance(referrerRef, bonusAmount) {
-        await runTransaction(referrerRef, (currentData) => {
-            if (!currentData) return currentData;
-            return {
-                ...currentData,
-                balance: (currentData.balance || 0) + bonusAmount,
-                totalReferralBonus: (currentData.totalReferralBonus || 0) + bonusAmount
-            };
-        });
-    }
-
-    async updateMemberStats(memberRef, bonusAmount, investmentAmount) {
-        await runTransaction(memberRef, (currentData) => {
-            if (!currentData) return currentData;
-            return {
-                ...currentData,
-                totalBonusGenerated: (currentData.totalBonusGenerated || 0) + bonusAmount,
-                totalInvestments: (currentData.totalInvestments || 0) + investmentAmount
-            };
-        });
-    }
-
-    async logBonus(referrerUid, memberUid, bonusAmount, investmentAmount) {
-        const bonusLogRef = ref(this.appState.database, `bonusLogs/${referrerUid}`);
-        await update(bonusLogRef, {
-            [`bonus_${Date.now()}`]: {
-                amount: bonusAmount,
-                memberId: memberUid,
-                investmentAmount: investmentAmount,
-                timestamp: new Date().toISOString()
-            }
-        });
-    }
-
-    async createNotification(referrerUid, bonusAmount, memberUid) {
-        const notificationRef = ref(this.appState.database, `notifications/${referrerUid}`);
-        await update(notificationRef, {
-            [`notif_${Date.now()}`]: {
-                type: 'referral_bonus',
-                message: `Vous avez reçu un bonus de parrainage de ${Utils.formatCurrency(bonusAmount)}`,
-                amount: bonusAmount,
-                memberId: memberUid,
-                timestamp: new Date().toISOString(),
-                read: false
-            }
-        });
-    }
-
-    listenForNewInvestments(userId) {
-        const investmentsRef = ref(this.appState.database, 'investments');
-        const userInvestmentsQuery = query(
-            investmentsRef,
-            orderByChild('userId'),
-            equalTo(userId)
-        );
-
-        onValue(userInvestmentsQuery, (snapshot) => {
-            if (snapshot.exists()) {
-                this.processInvestments(snapshot, userId);
-            }
-        });
-    }
-
-    processInvestments(snapshot, userId) {
-        snapshot.forEach((investmentSnapshot) => {
-            const investment = investmentSnapshot.val();
-            if (!investment.bonusProcessed) {
-                this.processUnprocessedInvestment(investment, userId, investmentSnapshot.key);
-            }
-        });
-    }
-
-    processUnprocessedInvestment(investment, userId, investmentKey) {
-        const userRef = ref(this.appState.database, `users/${userId}`);
-        onValue(userRef, (userSnapshot) => {
-            const userData = userSnapshot.val();
-            if (userData.referredBy) {
-                this.processReferralBonus(investment.amount, userId, userData.referredBy);
-                update(ref(this.appState.database, `investments/${investmentKey}`), {
-                    bonusProcessed: true
+            formatDate: (dateString) => {
+                return new Date(dateString).toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
                 });
+            },
+
+            copyToClipboard: async (elementId) => {
+                try {
+                    const element = document.getElementById(elementId);
+                    await navigator.clipboard.writeText(element.value);
+                    alert('Copié !');
+                } catch (err) {
+                    console.error('Erreur de copie:', err);
+                }
             }
-        }, { onlyOnce: true });
-    }
-}
+        };
 
-// Application Initialization
-class App {
-    constructor() {
-        this.appState = new AppState();
-        this.uiManager = new UIManager();
-        this.teamManager = new TeamManager(this.appState, this.uiManager);
-    }
+        // UI Update Functions
+        const updateUI = {
+            teamStats: (members) => {
+                document.getElementById('teamCount').textContent = members.length;
+                document.getElementById('teamLevel').textContent = 
+                    Math.floor(members.length / 5) + 1;
 
-    start() {
-        this.uiManager.setupEventListeners();
-        this.setupAuthListener();
-    }
+                if (currentUser) {
+                    const userRef = ref(database, `users/${currentUser.uid}`);
+                    onValue(userRef, (snapshot) => {
+                        const userData = snapshot.val();
+                        totalTeamBonus = userData.totalReferralBonus || 0;
+                        document.getElementById('totalBonus').textContent = 
+                            utils.formatCurrency(totalTeamBonus);
+                    });
+                }
+            },
 
-    setupAuthListener() {
-        onAuthStateChanged(this.appState.auth, (user) => {
-            if (!user) {
-                window.location.href = 'index.html';
-                return;
+            teamMembers: (members) => {
+                if (members.length === 0) {
+                    elements.teamMembersContainer.innerHTML = `
+                        <div class="no-team-message">
+                            Aucun membre dans votre équipe
+                        </div>`;
+                    return;
+                }
+
+                elements.teamMembersContainer.innerHTML = members.map(member => `
+                    <div class="worker-item">
+                        <div class="worker-info">
+                            <div class="worker-avatar">
+                                ${member.username.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="worker-details">
+                                <div class="worker-name">${member.username}</div>
+                                <div class="worker-date">
+                                    Rejoint le ${utils.formatDate(member.createdAt)}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="worker-stats">
+                            <div class="worker-stat">
+                                <div class="stat-label">Total investi</div>
+                                <div class="stat-amount">${utils.formatCurrency(member.totalInvestments || 0)}</div>
+                            </div>
+                            <div class="worker-stat">
+                                <div class="stat-label">Bonus généré</div>
+                                <div class="stat-amount">${utils.formatCurrency(member.totalBonusGenerated || 0)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
             }
+        };
 
-            this.appState.currentUser = user;
-            this.setupUserDataListener(user);
-            this.setupTeamDataListener(user);
-        });
-    }
+        // Process Referral Bonus for New Investment
+        const processReferralBonus = async (investmentAmount, memberUid, referrerUid) => {
+            try {
+                const referrerRef = ref(database, 'users/' + referrerUid);
+                const memberRef = ref(database, 'users/' + memberUid);
+                const bonusAmount = investmentAmount * 0.10; // 10% de l'investissement
 
-    setupUserDataListener(user) {
-        const userRef = ref(this.appState.database, 'users/' + user.uid);
-        onValue(userRef, (snapshot) => {
-            const userData = snapshot.val();
-            if (userData?.referralCode) {
-                this.uiManager.elements.referralCode.value = userData.referralCode;
-                this.uiManager.elements.referralLink.value = 
-                    `${window.location.origin}/index.html?ref=${userData.referralCode}`;
+                if (bonusAmount > 0) {
+                    // Mise à jour du solde du parrain
+                    await runTransaction(referrerRef, (currentData) => {
+                        if (!currentData) return currentData;
+                        return {
+                            ...currentData,
+                            balance: (currentData.balance || 0) + bonusAmount,
+                            totalReferralBonus: (currentData.totalReferralBonus || 0) + bonusAmount
+                        };
+                    });
+
+                    // Mise à jour des stats du filleul
+                    await runTransaction(memberRef, (currentData) => {
+                        if (!currentData) return currentData;
+                        return {
+                            ...currentData,
+                            totalBonusGenerated: (currentData.totalBonusGenerated || 0) + bonusAmount,
+                            totalInvestments: (currentData.totalInvestments || 0) + investmentAmount
+                        };
+                    });
+
+                    // Log du bonus
+                    const bonusLogRef = ref(database, `bonusLogs/${referrerUid}`);
+                    await update(bonusLogRef, {
+                        [`bonus_${Date.now()}`]: {
+                            amount: bonusAmount,
+                            memberId: memberUid,
+                            investmentAmount: investmentAmount,
+                            timestamp: new Date().toISOString()
+                        }
+                    });
+
+                    // Notification
+                    const notificationRef = ref(database, `notifications/${referrerUid}`);
+                    await update(notificationRef, {
+                        [`notif_${Date.now()}`]: {
+                            type: 'referral_bonus',
+                            message: `Vous avez reçu un bonus de parrainage de ${utils.formatCurrency(bonusAmount)}`,
+                            amount: bonusAmount,
+                            memberId: memberUid,
+                            timestamp: new Date().toISOString(),
+                            read: false
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Erreur lors du traitement du bonus:', error);
             }
-        });
-    }
+        };
 
-    setupTeamDataListener(user) {
-        const teamQuery = query(
-            ref(this.appState.database, 'users'),
-            orderByChild('referredBy'),
-            equalTo(user.uid)
-        );
+        // Listen for New Investments
+        const listenForNewInvestments = (userId) => {
+            const investmentsRef = ref(database, 'investments');
+            const userInvestmentsQuery = query(
+                investmentsRef,
+                orderByChild('userId'),
+                equalTo(userId)
+            );
 
-        onValue(teamQuery, (snapshot) => {
-            this.appState.teamMembers = [];
-            if (snapshot.exists()) {
-                snapshot.forEach((memberSnapshot) => {
-                    const memberData = {
-                        ...memberSnapshot.val(),
-                        uid: memberSnapshot.key
-                    };
-                    this.appState.teamMembers.push(memberData);
-                    this.teamManager.listenForNewInvestments(memberData.uid);
-                });
-            }
-            this.uiManager.updateTeamStats(this.appState.teamMembers, this.appState.totalTeamBonus);
-            this.uiManager.updateTeamMembers(this.appState.teamMembers);
-        });
-    }
-}
+            onValue(userInvestmentsQuery, (snapshot) => {
+                if (snapshot.exists()) {
+                    snapshot.forEach((investmentSnapshot) => {
+                        const investment = investmentSnapshot.val();
+                        if (!investment.bonusProcessed) {
+                            const userRef = ref(database, `users/${userId}`);
+                            onValue(userRef, (userSnapshot) => {
+                                const userData = userSnapshot.val();
+                                if (userData.referredBy) {
+                                    processReferralBonus(
+                                        investment.amount,
+                                        userId,
+                                        userData.referredBy
+                                    );
+                                    // Marquer comme traité
+                                    update(ref(database, `investments/${investmentSnapshot.key}`), {
+                                        bonusProcessed: true
+                                    });
+                                }
+                            }, { onlyOnce: true });
+                        }
+                    });
+                }
+            });
+        };
 
-// Initialize and start the application
-const app = new App();
-app.start();
-</script>
-</body>
-</html>
+        // Event Listeners Setup
+        const setupEventListeners = () => {
+            elements.showTeamButton?.addEventListener('click', () => {
+                elements.teamModal.classList.remove('hidden');
+            });
+
+            elements.closeTeamModalBtn?.addEventListener('click', () => {
+                elements.teamModal.classList.add('hidden');
+            });
+
+            elements.copyReferralCodeBtn?.addEventListener('click', () => 
+                utils.copyToClipboard('referralCode'));
+            
+            elements.copyReferralLinkBtn?.addEventListener('click', () => 
+                utils.copyToClipboard('referralLink'));
+
+            // Fermer la modal en cliquant en dehors
+            elements.teamModal?.addEventListener('click', (e) => {
+                if (e.target === elements.teamModal) {
+                    elements.teamModal.classList.add('hidden');
+                }
+            });
+        };
+
+        // Start Application
+        const startApp = () => {
+            setupEventListeners();
+
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    window.location.href = 'index.html';
+                    re
