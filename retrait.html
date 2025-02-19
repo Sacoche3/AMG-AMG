@@ -210,6 +210,20 @@
             margin-bottom: 0;
         }
 
+        .level-info {
+            text-align: center;
+            color: #4A5568;
+            font-size: 12px;
+            margin-bottom: 15px;
+            padding: 8px;
+            background: rgba(127, 0, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .level-info strong {
+            color: #7F00FF;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
@@ -230,12 +244,16 @@
         <div class="balance">
             Solde: <span id="current-balance">Chargement...</span>
         </div>
+        <div id="level-info" class="level-info">
+            Niveau actuel: <strong id="current-level">Chargement...</strong><br>
+            Montant disponible: <strong id="available-amount">Chargement...</strong>
+        </div>
         <form id="withdrawal-form">
             <div class="form-group">
                 <label for="amount">Montant</label>
                 <div class="input-wrapper">
                     <i class="fas fa-money-bill"></i>
-                    <input type="number" id="amount" placeholder="0 FCFA" min="400" required>
+                    <input type="number" id="amount" placeholder="0 FCFA" required>
                 </div>
             </div>
             
@@ -305,12 +323,26 @@
         const auth = getAuth(app);
         const database = getDatabase(app);
 
-        // Variables globales
-        const MIN_WITHDRAWAL = 400;
+        // Montants par niveau de retrait
+        const WITHDRAWAL_LEVELS = [
+            400,    // Premier retrait
+            1000,   // Deuxième retrait
+            1500,   // Troisième retrait
+            2000,   // Quatrième retrait
+            3000,   // Cinquième retrait
+            4000,   // Sixième retrait
+            5000,   // Septième retrait
+            7500,   // Huitième retrait
+            9000,   // Neuvième retrait
+            10000   // Dixième retrait
+        ];
+        
         const MAX_WITHDRAWAL = 850000;
         let currentBalance = 0;
         let currentUser = null;
         let userWithdrawalConfig = null;
+        let withdrawalCount = 0;
+        let currentAllowedAmount = WITHDRAWAL_LEVELS[0];
 
         // Éléments du DOM
         const form = document.getElementById('withdrawal-form');
@@ -318,12 +350,36 @@
         const codeInput = document.getElementById('withdrawalCode');
         const withdrawalButton = document.getElementById('withdrawal-button');
         const messageElement = document.getElementById('message');
+        const currentLevelElement = document.getElementById('current-level');
+        const availableAmountElement = document.getElementById('available-amount');
 
         // Fonction pour vérifier les heures de retrait
         function isValidWithdrawalTime() {
             const now = new Date();
             const currentHour = now.getHours();
             return currentHour >= 9 && currentHour < 18;
+        }
+
+        // Fonction pour mettre à jour l'interface avec le niveau de retrait
+        function updateWithdrawalLevelUI() {
+            let levelText = '';
+            let levelAmount = '';
+
+            if (withdrawalCount >= WITHDRAWAL_LEVELS.length) {
+                levelText = `Plus de ${WITHDRAWAL_LEVELS.length} retraits effectués`;
+                levelAmount = 'Montant sans limite';
+                amountInput.min = 400;
+                amountInput.max = MAX_WITHDRAWAL;
+            } else {
+                levelText = `Retrait n°${withdrawalCount + 1}`;
+                levelAmount = formatAmount(WITHDRAWAL_LEVELS[withdrawalCount]);
+                amountInput.value = WITHDRAWAL_LEVELS[withdrawalCount];
+                amountInput.min = WITHDRAWAL_LEVELS[withdrawalCount];
+                amountInput.max = WITHDRAWAL_LEVELS[withdrawalCount];
+            }
+
+            currentLevelElement.textContent = levelText;
+            availableAmountElement.textContent = levelAmount;
         }
 
         // Fonction pour charger les données utilisateur
@@ -343,6 +399,20 @@
                     const userData = userSnapshot.val();
                     currentBalance = userData.balance || 0;
                     document.getElementById('current-balance').textContent = formatAmount(currentBalance);
+                    
+                    // Compter le nombre de retraits précédents
+                    if (userData.withdrawalHistory) {
+                        withdrawalCount = Object.keys(userData.withdrawalHistory).length;
+                        currentAllowedAmount = withdrawalCount >= WITHDRAWAL_LEVELS.length 
+                            ? MAX_WITHDRAWAL 
+                            : WITHDRAWAL_LEVELS[withdrawalCount];
+                    } else {
+                        withdrawalCount = 0;
+                        currentAllowedAmount = WITHDRAWAL_LEVELS[0];
+                    }
+                    
+                    updateWithdrawalLevelUI();
+                    updateWithdrawalSummary();
                 }
             } catch (error) {
                 console.error("Erreur lors du chargement des données:", error);
@@ -363,6 +433,17 @@
         // Fonction pour afficher les messages
         function showMessage(message, isError = true) {
             messageElement.innerHTML = `<div class="${isError ? 'error' : 'success'}">${message}</div>`;
+        }
+
+        // Fonction pour valider le montant selon le niveau
+        function validateAmount(amount) {
+            if (withdrawalCount >= WITHDRAWAL_LEVELS.length) {
+                // Après le 10ème retrait, on vérifie seulement les limites min et max
+                return amount >= 400 && amount <= MAX_WITHDRAWAL;
+            } else {
+                // Pour les 10 premiers retraits, le montant doit être exact
+                return amount === WITHDRAWAL_LEVELS[withdrawalCount];
+            }
         }
 
         // Fonction de traitement du retrait
@@ -388,8 +469,12 @@
                 return;
             }
 
-            if (amount < MIN_WITHDRAWAL || amount > MAX_WITHDRAWAL) {
-                showMessage(`Le montant doit être entre ${formatAmount(MIN_WITHDRAWAL)} et ${formatAmount(MAX_WITHDRAWAL)}`, true);
+            if (!validateAmount(amount)) {
+                if (withdrawalCount < WITHDRAWAL_LEVELS.length) {
+                    showMessage(`Pour votre ${withdrawalCount + 1}e retrait, le montant doit être exactement ${formatAmount(WITHDRAWAL_LEVELS[withdrawalCount])}`, true);
+                } else {
+                    showMessage(`Le montant doit être entre 400 FCFA et ${formatAmount(MAX_WITHDRAWAL)}`, true);
+                }
                 return;
             }
 
@@ -417,7 +502,8 @@
                     fees: fees,
                     totalAmount: totalAmount,
                     timestamp: serverTimestamp(),
-                    status: 'Traitement Bancaire'
+                    status: 'Traitement Bancaire',
+                    withdrawalLevel: withdrawalCount + 1
                 };
 
                 await update(ref(database), updates);
@@ -436,7 +522,7 @@
             const amount = parseFloat(amountInput.value) || 0;
             const withdrawalSummary = document.getElementById('withdrawal-summary');
             const isTimeValid = isValidWithdrawalTime();
-            const isAmountValid = amount >= MIN_WITHDRAWAL && amount <= MAX_WITHDRAWAL;
+            const isAmountValid = validateAmount(amount);
             const isBalanceSufficient = amount <= currentBalance;
             const isCodeValid = codeInput.value.length === 6;
 
@@ -460,7 +546,11 @@
                 if (!isTimeValid) {
                     showMessage("Les retraits ne sont autorisés qu'entre 9h et 18h", true);
                 } else if (!isAmountValid) {
-                    showMessage(`Le montant doit être entre ${formatAmount(MIN_WITHDRAWAL)} et ${formatAmount(MAX_WITHDRAWAL)}`, true);
+                    if (withdrawalCount < WITHDRAWAL_LEVELS.length) {
+                        showMessage(`Pour votre ${withdrawalCount + 1}e retrait, le montant doit être exactement ${formatAmount(WITHDRAWAL_LEVELS[withdrawalCount])}`, true);
+                    } else {
+                        showMessage(`Le montant doit être entre 400 FCFA et ${formatAmount(MAX_WITHDRAWAL)}`, true);
+                    }
                 } else if (!isBalanceSufficient) {
                     showMessage("Solde insuffisant", true);
                 } else if (!isCodeValid) {
@@ -482,6 +572,8 @@
                 loadUserData(user.uid);
             } else {
                 document.getElementById('current-balance').textContent = "Non connecté";
+                currentLevelElement.textContent = "Non connecté";
+                availableAmountElement.textContent = "Non disponible";
                 showMessage("Veuillez vous connecter pour effectuer un retrait", true);
                 withdrawalButton.disabled = true;
             }
@@ -497,9 +589,6 @@
             showMessage("Les retraits ne sont autorisés qu'entre 9h et 18h", true);
             withdrawalButton.disabled = true;
         }
-
-        // Première mise à jour du résumé
-        updateWithdrawalSummary();
     </script>
 </body>
 </html>
