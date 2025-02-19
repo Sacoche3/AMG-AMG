@@ -3,412 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Connexion & Inscription</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Arial', sans-serif;
         }
-        
+
         body {
             min-height: 100vh;
-            background-image: url('https://image.noelshack.com/fichiers/2025/05/7/1738486062-palm-2-9-beachfront-hauteretreats-personnalis.jpg');
-            background-size: cover;
-            background-position: center;
-            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            background-image: url('https://image.noelshack.com/fichiers/2025/08/3/1739960416-3b719f08d3b01ae6ba68196f80f6d549.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            background-blend-mode: overlay;
         }
-        
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(45deg, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
-            backdrop-filter: blur(2px);
-        }
-        
-        .form-container {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 0 40px rgba(58, 134, 255, 0.4),
-                        0 0 80px rgba(58, 134, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: glow 1s infinite alternate;
-        }
-        
-        .form-container::before,
-        .form-container::after {
-            content: '';
-            position: absolute;
-            top: -3px; left: -3px;
-            width: calc(100% + 6px);
-            height: calc(100% + 6px);
-            background: linear-gradient(45deg, 
-                #ff0000, #ff8000, #ffff00, #00ff00, 
-                #00ffff, #0080ff, #0000ff, #8000ff, 
-                #ff00ff, #ff0080);
-            background-size: 1000% 1000%;
-            animation: rainbowBorder 4s linear infinite;
-            border-radius: 22px;
-            z-index: -1;
-        }
-        
-        .form-container::after {
-            filter: blur(15px);
-        }
-        
-        @keyframes rainbowBorder {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
-        
-        @keyframes glow {
-            from {
-                box-shadow: 0 0 40px rgba(58, 134, 255, 0.4),
-                            0 0 80px rgba(58, 134, 255, 0.2);
-            }
-            to {
-                box-shadow: 0 0 50px rgba(58, 134, 255, 0.6),
-                            0 0 100px rgba(58, 134, 255, 0.3);
-            }
-        }
-        
+
         .logo {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
-            margin-bottom: 30px;
         }
-        
-        .logo-icon {
-            font-size: 45px;
+
+        .logo-text {
             color: white;
-            text-shadow: 0 0 20px rgba(255,255,255,0.8),
-                         0 0 40px rgba(58, 134, 255, 0.6);
-            animation: logoColorChange 2s infinite;
-        }
-        
-        @keyframes logoColorChange {
-            0% { color: #ff0000; text-shadow: 0 0 20px rgba(255,0,0,0.8); }
-            20% { color: #ffff00; text-shadow: 0 0 20px rgba(255,255,0,0.8); }
-            40% { color: #00ff00; text-shadow: 0 0 20px rgba(0,255,0,0.8); }
-            60% { color: #00ffff; text-shadow: 0 0 20px rgba(0,255,255,0.8); }
-            80% { color: #0000ff; text-shadow: 0 0 20px rgba(0,0,255,0.8); }
-            100% { color: #ff00ff; text-shadow: 0 0 20px rgba(255,0,255,0.8); }
-        }
-        
-        .title {
-            font-size: 24px;
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: 600;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        
-        .input-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .country-select-label {
-            display: block;
-            color: white;
-            margin-bottom: 8px;
-            font-size: 14px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-        }
-        
-        input:focus, select:focus {
+
+        .logo-line {
+            width: 40px;
+            height: 2px;
             background: white;
-            border-color: #3a86ff;
-            box-shadow: 0 0 15px rgba(58,134,255,0.3);
-            outline: none;
+            margin: 10px auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
-        .phone-container {
-            display: flex;
-            gap: 10px;
+
+        .container {
+            width: 340px;
+            padding: 15px;
         }
-        
-        .country-code {
-            flex: 1;
+
+        .form-section {
+            padding: 20px 0;
         }
-        
-        .phone-number {
-            flex: 2;
-        }
-        
-        .selected-flag {
-            position: absolute;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 14px;
-            border-radius: 2px;
-            pointer-events: none;
-        }
-        
-        .flag-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .flag-icon {
-            width: 20px;
-            height: 14px;
-            object-fit: cover;
-            border-radius: 2px;
-        }
-        
-        .referral-label {
-            color: white;
-            font-size: 14px;
-            margin-bottom: 8px;
-            display: block;
-        }
-        
-        .optional-text {
-            color: rgba(255,255,255,0.7);
-            font-size: 12px;
-        }
-        
-        button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(45deg, #3a4fe0, #3a86ff);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        button::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: linear-gradient(45deg, 
-                rgba(255,255,255,0) 0%, 
-                rgba(255,255,255,0.8) 50%, 
-                rgba(255,255,255,0) 100%);
-            transform: rotate(45deg);
-            animation: buttonShine 3s infinite;
-        }
-        
-        @keyframes buttonShine {
-            0% { left: -50%; }
-            100% { left: 150%; }
-        }
-        
-        button:hover {
-            background: linear-gradient(45deg, #2838b0, #2b6ac0);
-            box-shadow: 0 0 20px rgba(58,134,255,0.4);
-        }
-        
-        .toggle-form {
-            text-align: center;
-            margin-top: 20px;
-            color: white;
-            font-size: 14px;
-        }
-        
-        .toggle-form a {
-            color: #3a86ff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            animation: linkColorChange 4s infinite;
-            cursor: pointer;
-        }
-        
-        @keyframes linkColorChange {
-            0% { color: #3a86ff; }
-            25% { color: #00ffff; }
-            50% { color: #00ff00; }
-            75% { color: #ffff00; }
-            100% { color: #3a86ff; }
-        }
-        
-        .toggle-form a:hover {
-            color: white;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-        }
-        
-        .error-message,
-        .success-message,
-        .referral-status {
-            font-size: 13px;
-            margin-top: 6px;
-            padding: 8px 12px;
-            border-radius: 6px;
+
+        #signup-section {
             display: none;
         }
-        
-        .error-message {
-            background: rgba(255,107,107,0.2);
-            color: #ff6b6b;
+
+        h2 {
+            color: #3bff00;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+        }
+
+        input:focus {
+            border-color: #3b00ff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        button {
+            width: 100%;
+            padding: 8px 12px;
+            background-color: #50ff00;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: 500;
+            backdrop-filter: blur(8px);
+        }
+
+        button:hover {
+            background-color: #50ff00;
+        }
+
+        .divider {
+            margin: 15px 0;
+            text-align: center;
+            color: #ff000a;
+            font-size: 12px;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .social-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .social-button {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            color: #555;
+            backdrop-filter: blur(8px);
+        }
+
+        .social-button:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .toggle-form a {
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 13px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+
+        .optional-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            margin-left: 6px;
+            font-weight: normal;
+        }
+
+        .referral-section {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .error-message,
         .success-message {
-            background: rgba(81,207,102,0.2);
-            color: #51cf66;
+            color: #ff4444;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
         }
-        
+
+        .success-message {
+            color: #00C851;
+        }
+
+        .referral-status {
+            font-size: 12px;
+            margin-top: 5px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
         .referral-status.valid {
-            background: rgba(81,207,102,0.2);
-            color: #51cf66;
+            background-color: rgba(0, 200, 81, 0.1);
+            color: #00C851;
         }
-        
+
         .referral-status.invalid {
-            background: rgba(255,107,107,0.2);
-            color: #ff6b6b;
+            background-color: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
         }
-        
-        #login-section { display: block; }
-        #signup-section { display: none; }
-        
-        .form-section {
-            transition: all 0.3s ease;
-        }
-        
-        @media (max-width: 480px) {
-            .form-container {
-                padding: 30px 20px;
-            }
-            
-            .title {
-                font-size: 22px;
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                max-width: 340px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <div class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-car"></i>
-            </div>
-        </div>
-        
+    <div class="logo">
+        <div class="logo-text">AMG MERCEDES </div>
+        <div class="logo-line"></div>
+    </div>
+
+    <div class="container">
         <div id="login-section" class="form-section">
-            <h1 class="title">Connexion</h1>
+            <h2>connexion </h2>
             <form id="loginFormData">
                 <div class="input-group">
-                    <label class="country-select-label">Veuillez sélectionner votre pays</label>
-                    <select id="loginCountryCode" class="country-code" required>
-                        <option value="" disabled selected>Choisir un pays</option>
-                        <option value="+228" class="flag-option" data-flag="https://flagcdn.com/w20/tg.png" data-country="Togo">
-                            Togo (+228)
-                        </option>
-                        <option value="+229" class="flag-option" data-flag="https://flagcdn.com/w20/bj.png" data-country="Bénin">
-                            Bénin (+229)
-                        </option>
-                        <option value="+223" class="flag-option" data-flag="https://flagcdn.com/w20/ml.png" data-country="Mali">
-                            Mali (+223)
-                        </option>
-                        <option value="+226" class="flag-option" data-flag="https://flagcdn.com/w20/bf.png" data-country="Burkina Faso">
-                            Burkina Faso (+226)
-                        </option>
-                        <option value="+225" class="flag-option" data-flag="https://flagcdn.com/w20/ci.png" data-country="Côte d'Ivoire">
-                            Côte d'Ivoire (+225)
-                        </option>
-                        <option value="+221" class="flag-option" data-flag="https://flagcdn.com/w20/sn.png" data-country="Sénégal">
-                            Sénégal (+221)
-                        </option>
-                    </select>
+                    <label for="loginTelephone">Téléphone</label>
+                    <input type="tel" id="loginTelephone" required>
                 </div>
                 <div class="input-group">
-                    <input type="tel" id="loginTelephone" placeholder="Numéro de téléphone" required>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="loginPassword" placeholder="Mot de passe" required>
+                    <label for="loginPassword">Mot de passe</label>
+                    <input type="password" id="loginPassword" required>
                 </div>
                 <div id="loginError" class="error-message"></div>
                 <button type="submit">Se connecter</button>
+                
                 
                 <div class="toggle-form">
                     <a onclick="toggleForm()">Pas encore inscrit ? Créer un compte</a>
                 </div>
             </form>
         </div>
-        
+
         <div id="signup-section" class="form-section">
-            <h1 class="title">Inscription</h1>
+            <h2>Inscription</h2>
             <form id="signupFormData">
                 <div class="input-group">
-                    <input type="text" id="signupUsername" placeholder="Nom complet" required>
+                    <label for="signupUsername">Nom complet</label>
+                    <input type="text" id="signupUsername" required>
                 </div>
                 <div class="input-group">
-                    <label class="country-select-label">Veuillez sélectionner votre pays</label>
-                    <select id="signupCountryCode" class="country-code" required>
-                        <option value="" disabled selected>Choisir un pays</option>
-                        <option value="+228" class="flag-option" data-flag="https://flagcdn.com/w20/tg.png" data-country="Togo">
-                            Togo (+228)
-                        </option>
-                        <option value="+229" class="flag-option" data-flag="https://flagcdn.com/w20/bj.png" data-country="Bénin">
-                            Bénin (+229)
-                        </option>
-                        <option value="+223" class="flag-option" data-flag="https://flagcdn.com/w20/ml.png" data-country="Mali">
-                            Mali (+223)
-                        </option>
-                        <option value="+226" class="flag-option" data-flag="https://flagcdn.com/w20/bf.png" data-country="Burkina Faso">
-                            Burkina Faso (+226)
-                        </option>
-                        <option value="+225" class="flag-option" data-flag="https://flagcdn.com/w20/ci.png" data-country="Côte d'Ivoire">
-                            Côte d'Ivoire (+225)
-                        </option>
-                        <option value="+221" class="flag-option" data-flag="https://flagcdn.com/w20/sn.png" data-country="Sénégal">
-                            Sénégal (+221)
-                        </option>
-                    </select>
+                    <label for="signupTelephone">Téléphone</label>
+                    <input type="tel" id="signupTelephone" required>
                 </div>
                 <div class="input-group">
-                    <input type="tel" id="signupTelephone" placeholder="Numéro de téléphone" required>
+                    <label for="signupPassword">Mot de passe</label>
+                    <input type="password" id="signupPassword" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" id="signupPassword" placeholder="Mot de passe" required>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="confirmPassword" placeholder="Confirmer votre mot de passe" required>
+                    <label for="confirmPassword">Confirmer le mot de passe</label>
+                    <input type="password" id="confirmPassword" required>
                 </div>
                 
-                <div class="input-group">
-                    <label class="referral-label">
-                        Parrainage <span class="optional-text">(facultatif)</span>
-                    </label>
-                    <input type="text" id="referralCode" placeholder="Code de parrainage">
-                    <div id="referralStatus" class="referral-status"></div>
+                <div class="referral-section">
+                    <div class="input-group">
+                        <label for="referralCode">
+                            Code de parrainage
+                            <span class="optional-text">(facultatif)</span>
+                        </label>
+                        <input type="text" id="referralCode" placeholder="Entrez votre code de parrainage">
+                        <div id="referralStatus" class="referral-status"></div>
+                    </div>
                 </div>
 
                 <div id="signupError" class="error-message"></div>
@@ -423,243 +302,21 @@
     </div>
 
     <script>
-        // Fonction pour basculer entre les formulaires
         function toggleForm() {
             const loginSection = document.getElementById('login-section');
             const signupSection = document.getElementById('signup-section');
             
-            if (loginSection.style.display === 'block') {
-                loginSection.style.display = 'none';
-                signupSection.style.display = 'block';
-            } else {
+            if (loginSection.style.display === 'none') {
                 loginSection.style.display = 'block';
                 signupSection.style.display = 'none';
-            }
-            
-            // Réinitialiser les messages d'erreur et de succès
-            clearMessages();
-        }
-
-        // Fonction pour nettoyer les messages
-        function clearMessages() {
-            const messages = ['loginError', 'signupError', 'signupSuccess', 'referralStatus'];
-            messages.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.style.display = 'none';
-                    element.textContent = '';
-                }
-            });
-        }
-
-        // Fonction pour mettre à jour les drapeaux des sélecteurs de pays
-        function updateSelectFlag(event) {
-            const select = event.target || this;
-            const selectedOption = select.options[select.selectedIndex];
-            
-            const existingFlag = select.parentNode.querySelector('.selected-flag');
-            if (existingFlag) {
-                existingFlag.remove();
-            }
-            
-            if (selectedOption && selectedOption.getAttribute('data-flag')) {
-                const flagUrl = selectedOption.getAttribute('data-flag');
-                const flagImg = document.createElement('img');
-                flagImg.src = flagUrl;
-                flagImg.className = 'selected-flag';
-                flagImg.alt = selectedOption.getAttribute('data-country') || '';
-                
-                select.parentNode.style.position = 'relative';
-                select.parentNode.appendChild(flagImg);
-            }
-        }
-
-        // Initialisation lors du chargement de la page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Configuration des sélecteurs de pays
-            const countrySelects = document.querySelectorAll('select.country-code');
-            countrySelects.forEach(select => {
-                select.addEventListener('change', updateSelectFlag);
-                updateSelectFlag.call(select); // Mise à jour initiale
-            });
-
-            // Gestion des formulaires
-            const loginForm = document.getElementById('loginFormData');
-            const signupForm = document.getElementById('signupFormData');
-
-            if (loginForm) {
-                loginForm.addEventListener('submit', handleLogin);
-            }
-
-            if (signupForm) {
-                signupForm.addEventListener('submit', handleSignup);
-            }
-
-            // Gestion du code de parrainage
-            const referralInput = document.getElementById('referralCode');
-            if (referralInput) {
-                referralInput.addEventListener('input', debounce(handleReferralInput, 500));
-            }
-
-            // Vérifier le code de parrainage dans l'URL
-            checkReferralCodeInURL();
-        });
-
-        // Fonction debounce pour limiter les appels
-        function debounce(func, wait) {
-            let timeout;
-            return function(...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
-
-        // Fonctions de validation
-        function validatePhoneNumber(phone, countryCode) {
-            phone = phone.replace(/\D/g, '');
-            const patterns = {
-                '+228': /^\d{8}$/, // Togo
-                '+229': /^\d{8}$/, // Bénin
-                '+223': /^\d{8}$/, // Mali
-                '+226': /^\d{8}$/, // Burkina Faso
-                '+225': /^\d{8}$/, // Côte d'Ivoire
-                '+221': /^\d{9}$/  // Sénégal
-            };
-            return patterns[countryCode]?.test(phone) || false;
-        }
-
-        // Fonction pour afficher les messages d'erreur
-        function showError(elementId, message) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.textContent = message;
-                element.style.display = 'block';
-            }
-        }
-
-        // Fonction pour afficher les messages de succès
-        function showSuccess(elementId, message) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.textContent = message;
-                element.style.display = 'block';
-            }
-        }
-
-        // Gestion de la connexion
-        async function handleLogin(event) {
-            event.preventDefault();
-            clearMessages();
-
-            const telephone = document.getElementById('loginTelephone').value;
-            const password = document.getElementById('loginPassword').value;
-            const countryCode = document.getElementById('loginCountryCode').value;
-
-            if (!telephone || !password || !countryCode) {
-                showError('loginError', 'Veuillez remplir tous les champs');
-                return;
-            }
-
-            if (!validatePhoneNumber(telephone, countryCode)) {
-                showError('loginError', 'Numéro de téléphone invalide');
-                return;
-            }
-
-            try {
-                // Ici, vous pouvez ajouter votre logique de connexion
-                const email = `${telephone}@temp.com`; // Email temporaire pour Firebase
-                // Appel à votre API ou service d'authentification
-                console.log('Tentative de connexion:', { email, password });
-            } catch (error) {
-                showError('loginError', 'Erreur de connexion: ' + error.message);
-            }
-        }
-
-        // Gestion de l'inscription
-        async function handleSignup(event) {
-            event.preventDefault();
-            clearMessages();
-
-            const username = document.getElementById('signupUsername').value;
-            const telephone = document.getElementById('signupTelephone').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const countryCode = document.getElementById('signupCountryCode').value;
-            const referralCode = document.getElementById('referralCode')?.value;
-
-            // Validations
-            if (!username || !telephone || !password || !confirmPassword || !countryCode) {
-                showError('signupError', 'Veuillez remplir tous les champs requis');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                showError('signupError', 'Les mots de passe ne correspondent pas');
-                return;
-            }
-
-            if (password.length < 6) {
-                showError('signupError', 'Le mot de passe doit contenir au moins 6 caractères');
-                return;
-            }
-
-            if (!validatePhoneNumber(telephone, countryCode)) {
-                showError('signupError', 'Numéro de téléphone invalide');
-                return;
-            }
-
-            try {
-                // Ici, vous pouvez ajouter votre logique d'inscription
-                const email = `${telephone}@temp.com`; // Email temporaire pour Firebase
-                // Appel à votre API ou service d'authentification
-                console.log('Tentative d\'inscription:', { username, email, password, referralCode });
-                
-                showSuccess('signupSuccess', 'Inscription réussie ! Redirection...');
-                setTimeout(() => {
-                    window.location.href = 'accueil.html';
-                }, 2000);
-            } catch (error) {
-                showError('signupError', 'Erreur d\'inscription: ' + error.message);
-            }
-        }
-
-        // Gestion du code de parrainage
-        async function handleReferralInput() {
-            const referralInput = document.getElementById('referralCode');
-            const code = referralInput.value.trim().toUpperCase();
-            
-            if (!code) {
-                document.getElementById('referralStatus').style.display = 'none';
-                return;
-            }
-
-            try {
-                // Ici, vous pouvez ajouter votre logique de vérification du code de parrainage
-                // Simulation d'une vérification
-                const isValid = code.length === 6;
-                const statusElement = document.getElementById('referralStatus');
-                statusElement.textContent = isValid ? 'Code valide !' : 'Code invalide';
-                statusElement.className = `referral-status ${isValid ? 'valid' : 'invalid'}`;
-                statusElement.style.display = 'block';
-            } catch (error) {
-                console.error('Erreur lors de la vérification du code:', error);
-            }
-        }
-
-        // Vérification du code de parrainage dans l'URL
-        function checkReferralCodeInURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const referralCode = urlParams.get('ref');
-            const referralInput = document.getElementById('referralCode');
-            
-            if (referralInput && referralCode) {
-                referralInput.value = referralCode.toUpperCase();
-                handleReferralInput();
+            } else {
+                loginSection.style.display = 'none';
+                signupSection.style.display = 'block';
             }
         }
     </script>
-   
-   <script type="module">
+    
+  <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
         import { 
             getAuth, 
